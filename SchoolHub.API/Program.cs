@@ -35,7 +35,7 @@ namespace SchoolHub.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Escola.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SchoolHub.Api", Version = "v1" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -77,7 +77,7 @@ namespace SchoolHub.Api
 
             builder.Services.AddIdentityCore<User>()
                .AddRoles<Role>()
-               .AddTokenProvider<DataProtectorTokenProvider<User>>("EscolaApi")
+               .AddTokenProvider<DataProtectorTokenProvider<User>>("SchoolApi")
                .AddEntityFrameworkStores<AppDbContext>()
                .AddDefaultTokenProviders();
 

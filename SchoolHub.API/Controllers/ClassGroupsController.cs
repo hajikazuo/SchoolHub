@@ -51,7 +51,7 @@ namespace SchoolHub.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(ClassGroupDto request)
         {
-            var tennantid = this.TennantIdUserLoggedIn;
+             var tennantid = this.TennantIdUserLoggedIn;
 
             if (tennantid == default)
             {
