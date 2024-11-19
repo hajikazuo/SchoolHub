@@ -26,7 +26,9 @@ namespace SchoolHub.Common.Repositories.Implementation
 
         public async Task<ClassGroup> GetByIdAsync(Guid id)
         {
-            return await _context.ClassGroups.FirstOrDefaultAsync(c => c.ClassGroupId == id);
+            return await _context.ClassGroups
+                .Include(t => t.Tennant)
+                .FirstOrDefaultAsync(c => c.ClassGroupId == id);
         }
 
         public async Task<ClassGroup> CreateAsync(ClassGroup classGroup)

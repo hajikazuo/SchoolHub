@@ -19,7 +19,7 @@ namespace SchoolHub.Common.Models.Entities
         public Guid TennantId { get; set; }
 
 
-        public virtual Tennant Tennant { get; set; }
+        public virtual Tennant? Tennant { get; set; }
         public virtual ICollection<User> Users { get; set; } = new List<User>();
         public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 

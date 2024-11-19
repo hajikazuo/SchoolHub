@@ -10,23 +10,26 @@ using RT.Comb;
 using SchoolHub.Common.Data;
 using SchoolHub.Common.Models.Entities;
 using SchoolHub.Common.Models.Entities.Users;
+using SchoolHub.Common.Repositories.Interfaces;
+using SchoolHub.Mvc.Extensions;
 
 namespace SchoolHub.Mvc.Controllers
 {
     public class ClassGroupsController : Controller
     {
-        public ClassGroupsController(ICombProvider comb, AppDbContext context, UserManager<User> userManager) : base(comb, context, userManager)
+        private readonly IClassGroupRepository _classGroupRepository;
+        public ClassGroupsController(IClassGroupRepository classGroupRepository, ICombProvider comb, AppDbContext context, UserManager<User> userManager) : base(comb, context, userManager)
         {
+            _classGroupRepository = classGroupRepository;
         }
 
-        // GET: ClassGroups
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.ClassGroups.Include(c => c.Tennant);
-            return View(await appDbContext.ToListAsync());
+            var tennantid = this._tennantIdUserLoggedIn;
+            var classGroup = await _classGroupRepository.GetAllAsync(tennantid);
+            return View(classGroup);
         }
 
-        // GET: ClassGroups/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,9 +37,8 @@ namespace SchoolHub.Mvc.Controllers
                 return NotFound();
             }
 
-            var classGroup = await _context.ClassGroups
-                .Include(c => c.Tennant)
-                .FirstOrDefaultAsync(m => m.ClassGroupId == id);
+            var classGroup = await _classGroupRepository.GetByIdAsync(id.Value);
+
             if (classGroup == null)
             {
                 return NotFound();
@@ -45,32 +47,28 @@ namespace SchoolHub.Mvc.Controllers
             return View(classGroup);
         }
 
-        // GET: ClassGroups/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TennantId"] = new SelectList(_context.Tennants, "TennantId", "Name");
             return View();
         }
 
-        // POST: ClassGroups/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassGroupId,Name,TennantId,DateRegistration")] ClassGroup classGroup)
+        public async Task<IActionResult> Create(ClassGroup classGroup)
         {
+            var tennantid = this._tennantIdUserLoggedIn;
+
             if (ModelState.IsValid)
             {
-                classGroup.ClassGroupId = Guid.NewGuid();
-                _context.Add(classGroup);
-                await _context.SaveChangesAsync();
+                classGroup.ClassGroupId = _comb.Create();
+                classGroup.TennantId = tennantid;
+
+                var response = await _classGroupRepository.CreateAsync(classGroup);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TennantId"] = new SelectList(_context.Tennants, "TennantId", "Name", classGroup.TennantId);
             return View(classGroup);
         }
 
-        // GET: ClassGroups/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -78,21 +76,19 @@ namespace SchoolHub.Mvc.Controllers
                 return NotFound();
             }
 
-            var classGroup = await _context.ClassGroups.FindAsync(id);
+            var classGroup = await _classGroupRepository.GetByIdAsync(id.Value);
+
             if (classGroup == null)
             {
                 return NotFound();
             }
-            ViewData["TennantId"] = new SelectList(_context.Tennants, "TennantId", "Name", classGroup.TennantId);
+
             return View(classGroup);
         }
 
-        // POST: ClassGroups/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ClassGroupId,Name,TennantId,DateRegistration")] ClassGroup classGroup)
+        public async Task<IActionResult> Edit(Guid id, ClassGroup classGroup)
         {
             if (id != classGroup.ClassGroupId)
             {
@@ -101,29 +97,13 @@ namespace SchoolHub.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(classGroup);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClassGroupExists(classGroup.ClassGroupId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _classGroupRepository.UpdateAsync(classGroup);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TennantId"] = new SelectList(_context.Tennants, "TennantId", "Name", classGroup.TennantId);
             return View(classGroup);
         }
 
-        // GET: ClassGroups/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -131,9 +111,8 @@ namespace SchoolHub.Mvc.Controllers
                 return NotFound();
             }
 
-            var classGroup = await _context.ClassGroups
-                .Include(c => c.Tennant)
-                .FirstOrDefaultAsync(m => m.ClassGroupId == id);
+            var classGroup = await _classGroupRepository.GetByIdAsync(id.Value);
+
             if (classGroup == null)
             {
                 return NotFound();
@@ -142,24 +121,12 @@ namespace SchoolHub.Mvc.Controllers
             return View(classGroup);
         }
 
-        // POST: ClassGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var classGroup = await _context.ClassGroups.FindAsync(id);
-            if (classGroup != null)
-            {
-                _context.ClassGroups.Remove(classGroup);
-            }
-
-            await _context.SaveChangesAsync();
+            await _classGroupRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ClassGroupExists(Guid id)
-        {
-            return _context.ClassGroups.Any(e => e.ClassGroupId == id);
         }
     }
 }
