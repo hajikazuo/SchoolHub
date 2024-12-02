@@ -28,6 +28,7 @@ namespace SchoolHub.Common.Repositories.Implementation
         {
             return await _context.ClassGroups
                 .Include(t => t.Tennant)
+                .Include(u => u.Users)
                 .FirstOrDefaultAsync(c => c.ClassGroupId == id);
         }
 

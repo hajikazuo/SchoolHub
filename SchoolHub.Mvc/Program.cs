@@ -21,6 +21,7 @@ namespace SchoolHub.Mvc
 
             builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
             builder.Services.AddScoped<ITennantRepository, TennantRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             builder.Services.AddScoped<ISeedService, SeedService>();
 

@@ -1,0 +1,28 @@
+﻿@using SchoolHub.Common.Models.Entities
+@using SchoolHub.Common.Models.Entities.Users
+@model ClassGroup
+
+@{
+    ViewBag.Title = "Add Students";
+}
+
+<form asp-action="AddStudents" method="post">
+    <input type="hidden" name="id" value="@Model.ClassGroupId" />
+    <label for="students">
+        Selecione os estudantes que deseja adicionar ao grupo
+    </label>
+    <ul class="list-group">
+        @foreach (var student in (List<User>)ViewData["Students"])
+        {
+            <li class="list-group-item">
+                <label>
+                    <input type="checkbox" name="students" value="@student.Id" />
+                    @student.Name
+                </label>
+            </li>
+        }
+    </ul>
+    <div class="form-group">
+        <input type="submit" value="Add Students" class="btn btn-primary" />
+    </div>
+</form>

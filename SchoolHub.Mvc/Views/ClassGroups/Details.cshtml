@@ -5,29 +5,45 @@
 }
 
 <h1>Details</h1>
-
+<a asp-action="AddStudents" asp-route-id="@Model.ClassGroupId"> Cadastrar</a>
 <div>
     <h4>ClassGroup</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Tennant)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Tennant.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateRegistration)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateRegistration)
         </dd>
+
+        <dt class="col-sm-12">
+            Students
+        </dt>
+
+        <form asp-action="RemoveStudents" method="post" asp-route-id="@Model.ClassGroupId">
+            <input type="hidden" name="id" value="@Model.ClassGroupId" />
+            @foreach (var user in Model.Users)
+            {
+                <label>
+                    <input type="checkbox" name="students" value="@user.Id" />
+                    @user.Name
+                </label>
+            }
+            <button type="submit">Remover Selecionados</button>
+        </form>
     </dl>
 </div>
 <div>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    var availableUsers = ViewBag.AvailableUsers as IEnumerable<SchoolHub.Common.Models.Entities.Users.User>;
 }
 
 <h1>Create</h1>
@@ -17,6 +18,17 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label>Students</label>
+                @foreach (var user in availableUsers)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="selectedUserIds" value="@user.Id" />
+                        <label class="form-check-label">@user.Name</label>
+                    </div>
+                }
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
