@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SchoolHub.Common.Models.Turma>
+
+@{
+    var pageName = "Listagem de turmas";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Cadastrar
+        </a>
+    </div>
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-vcenter table-mobile-md card-table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                                <th>@Html.DisplayNameFor(model => model.DataCadastro)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DataCadastro)</td>
+                                    <td>
+                                        <div class="btn-list flex-nowrap">
+                                            <div>
+                                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                                    Ações
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TurmaId">Editar</a>
+                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TurmaId">Detalhes</a>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    data-id="@item.TurmaId" data-nome="@item.Nome">
+                                                Deletar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <i class="ti ti-alert-circle text-danger" style="font-size: 5rem;"></i>
+                <h3>Confirma Exclusão?</h3>
+                <p class="text-secondary">Você tem certeza que deseja excluir "<span id="itemParaDeletar"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="idParaDeletar" name="id" />
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn w-100" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-danger w-100">OK</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

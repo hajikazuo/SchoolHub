@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolHub.Mvc", "SchoolHub\SchoolHub.Mvc.csproj", "{FE604A26-7B9D-4D7A-9250-D355A23B8F77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolHub.Common", "SchoolHub.Common\SchoolHub.Common.csproj", "{4E5F8546-87B8-4AC7-BC16-4D4540A608E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE604A26-7B9D-4D7A-9250-D355A23B8F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE604A26-7B9D-4D7A-9250-D355A23B8F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE604A26-7B9D-4D7A-9250-D355A23B8F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE604A26-7B9D-4D7A-9250-D355A23B8F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E5F8546-87B8-4AC7-BC16-4D4540A608E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E5F8546-87B8-4AC7-BC16-4D4540A608E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E5F8546-87B8-4AC7-BC16-4D4540A608E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E5F8546-87B8-4AC7-BC16-4D4540A608E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

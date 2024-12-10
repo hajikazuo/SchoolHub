@@ -1,0 +1,93 @@
+﻿@model SchoolHub.Common.Models.Turma
+
+@{
+    var pageName = "Detalhes da turma";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@pageName</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>@Html.DisplayNameFor(model => model.Nome):</strong> @Model.Nome</p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Tennant):</strong> @Model.Tennant.Nome</p>
+                    <p><strong>@Html.DisplayNameFor(model => model.DataCadastro):</strong> @Model.DataCadastro</p>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <a asp-action="Index" class="btn btn-link">Voltar para a lista</a>
+                        <a asp-action="Edit" asp-route-id="@Model.TurmaId" class="btn btn-primary ms-auto">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="btn-list flex-nowrap">
+                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modalAdicionar">
+                    <i class="ti ti-plus"></i> Adicionar usuários
+                </a>
+                <a href="#" class="btn btn-danger d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modalRemover">
+                    <i class="ti ti-minus"></i> Remover usuários
+                </a>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-vcenter table-mobile-md card-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Data de Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var aluno in Model.Usuarios)
+                            {
+                                <tr>
+                                    <td>@aluno.Nome</td>
+                                    <td>@aluno.Email</td>
+                                    <td>@aluno.DataCadastro.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAdicionar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Usuários</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_AdicionarUsuarios", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRemover" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remover Usuários</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("_RemoverUsuarios", Model)
+            </div>
+        </div>
+    </div>
+</div>

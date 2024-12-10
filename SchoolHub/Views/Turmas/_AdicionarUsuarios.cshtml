@@ -1,0 +1,23 @@
+﻿@using SchoolHub.Common.Models.Usuarios
+@model SchoolHub.Common.Models.Turma
+
+<form asp-action="AdicionarUsuarios" method="post">
+    <input type="hidden" name="turmaId" value="@Model.TurmaId" />
+    <div class="mb-3">
+        <label for="usuarios" class="form-label">Selecione os usuários para adicionar:</label>
+        <ul class="list-group">
+            @foreach (var usuario in (List<Usuario>)ViewData["UsuariosSemTurma"])
+            {
+                <li class="list-group-item">
+                    <label>
+                        <input type="checkbox" name="usuariosParaAdd" value="@usuario.Id" />
+                        @usuario.Nome
+                    </label>
+                </li>
+            }
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        <i class="ti ti-plus"></i> Adicionar
+    </button>
+</form>

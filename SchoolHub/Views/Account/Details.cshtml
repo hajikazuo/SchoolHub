@@ -1,0 +1,35 @@
+﻿@model SchoolHub.Common.Models.Usuarios.Usuario
+
+@{
+    var pageName = "Detalhes do usuário";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@pageName</h4>
+                </div>
+                <div class="card-body">
+                    <img src="/assets/img/usuarios/@Model.Imagem" alt="Imagem do usuário" class="avatar avatar-xl mb-3 rounded" onerror="ImgError(this)">
+                    <p><strong>@Html.DisplayNameFor(model => model.Nome):</strong> @Model.Nome</p>
+                    <p><strong>Função:</strong> @ViewData["Funcao"]</p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Email):</strong> <a href="mailto:@Model.Email">@Model.Email</a></p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Cpf):</strong>@Model.Cpf</p>
+                    <p>
+                        <strong>@Html.DisplayNameFor(model => model.Celular):</strong>
+                        <a href="https://wa.me/@Model.Celular" target="_blank">@Model.Celular</a>
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <a asp-action="Index" class="btn btn-link">Voltar para a lista</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-auto">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

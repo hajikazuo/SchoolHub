@@ -1,0 +1,22 @@
+﻿@model SchoolHub.Common.Models.Turma
+
+<form asp-action="RemoverUsuarios" method="post">
+    <input type="hidden" name="turmaId" value="@Model.TurmaId" />
+    <div class="mb-3">
+        <label for="usuarios" class="form-label">Selecione os usuários para remover:</label>
+        <ul class="list-group">
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <li class="list-group-item">
+                    <label>
+                        <input type="checkbox" name="usuariosParaRemover" value="@usuario.Id" />
+                        @usuario.Nome
+                    </label>
+                </li>
+            }
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-danger">
+        <i class="ti ti-minus"></i> Remover
+    </button>
+</form>
