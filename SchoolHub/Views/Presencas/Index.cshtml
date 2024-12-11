@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SchoolHub.Common.Models.Presenca>
+
+@{
+    var pageName = "Listagem de presenças";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <div class="mb-3">
+        <form method="get" class="mb-3">
+            <div class="form-group">
+                <label for="dataFiltro">Selecione a data:</label>
+                <div class="input-group">
+                    <input type="date" id="dataFiltro" name="dataFiltro" class="form-control" value="@ViewBag.DataFiltro.ToString("yyyy-MM-dd")">
+                    <button type="submit" class="btn btn-secondary">Filtrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i>
+            Cadastrar
+        </a>
+    </div>
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@pageName: @ViewBag.DataFiltro.ToString("dd/MM/yyyy")</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-vcenter table-mobile-md card-table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Usuario.Nome)</th>
+                                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                                <th>@Html.DisplayNameFor(model => model.Observacoes)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Usuario.Nome</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.Observacoes</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

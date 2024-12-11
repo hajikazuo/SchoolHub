@@ -21,11 +21,13 @@ namespace SchoolHub.Common.Models
         public Guid UsuarioId { get; set; }
 
         [Required]
+        [Display(Name = "Data da aula")]
         public DateTime DataAula { get; set; }
 
         public PresencaStatus Status { get; set; }
 
         [MaxLength(500)]
+        [Display(Name = "Observações")]
         public string? Observacoes { get; set; }
 
         public virtual Usuario? Usuario { get; set; }
@@ -34,9 +36,11 @@ namespace SchoolHub.Common.Models
         #region Interface
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
+        [Display(Name = "Data de cadastro")]
         public DateTime DataCadastro { get; set; }
 
         [ScaffoldColumn(false)]
+        [Display(Name = "Data últ. modificação")]
         public DateTime? DataModificado { get; set; }
 
         #endregion

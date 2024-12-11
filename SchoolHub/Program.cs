@@ -16,6 +16,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
 builder.Services.AddScoped<ITennantRepository, TennantRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IPresencaRepository, PresencaRepository>();
 
 builder.Services.AddScoped<ISeedService, SeedService>();
 builder.Services.AddScoped<IUploadFotoService, UploadFotoService>();

@@ -92,7 +92,7 @@ namespace SchoolHub.Common.Data
                     TennantId = TennantIDModel,
                     Status = TennantStatus.Ativo,
                     Nome = "Cursinho Gauss",
-                    Logo = "b2ab9e91-fcfc-4811-aaca-35ad28d9d73c.png",
+                    Logo = "046994a0-5aee-45ff-aa31-eda7b01d0885.png",
                     Endereco = "Avenida Nove de Julho, 288 - Centro Atibaia, SP 12940-580",
                     Email = "gauss@email.com",
                     Telefone = "(11) 4412-1234",

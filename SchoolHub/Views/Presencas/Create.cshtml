@@ -1,0 +1,64 @@
+﻿@model SchoolHub.Common.Models.Turma
+
+@{
+    var pageName = "Cadastrar presença";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <form method="post" action="@Url.Action("Create")">
+        <div class="mb-3">
+            <div class="mb-3">
+                <div class="form-group my-3">
+                    <label for="dataAula" class="form-label">Data da Aula:</label>
+                    <input type="date" id="dataAula" name="dataAula" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">@pageName</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter table-mobile-md card-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Alunos
+                                    </th>
+                                    <th>
+                                        Confirmar presença
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Usuarios)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            @item.Nome
+                                        </td>
+                                        <td>
+                                            <select name="presenca[@item.Id]" class="form-control" asp-items="ViewBag.Status"></select>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-end">
+                        <div class="d-flex">
+                            <a asp-action="Index" class="btn btn-link">Voltar para a lista</a>
+                            <button type="submit" class="btn btn-primary ms-auto">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
