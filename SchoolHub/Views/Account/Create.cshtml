@@ -61,20 +61,16 @@
                                 <span asp-validation-for="SelectedRole" class="text-danger"></span>
                             </div>
 
-                            <fieldset>
-                                <legend>Documentos:</legend>
-                                <span asp-validation-for="Documentos" class="text-danger"></span>
-                                <div class="form-group">
-                                    <input type="hidden" value="0" id="qtdDiv" name="qtdDiv" />
-                                    <div id="collectionItems">
+                            <span asp-validation-for="Documentos" class="text-danger"></span>
+                            <div class="form-group">
+                                <input type="hidden" value="0" id="qtdDiv" name="qtdDiv" />
+                                <div id="collectionItems">
 
-                                        @await Html.PartialAsync("_CreateOrEditDocumentos", (Model != null && Model.Documentos != null ? Model.Documentos : new List<Documento>()))
+                                    @await Html.PartialAsync("_CreateOrEditDocumentos", (Model != null && Model.Documentos != null ? Model.Documentos : new List<Documento>()))
 
-                                    </div>
-                                    <button type="button" id="btnAddMore" class="btn btn-primary">Adicionar</button>
                                 </div>
-                            </fieldset>
-
+                                <button type="button" id="btnAddMore" class="btn btn-primary">Adicionar documento(s)</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer text-end">

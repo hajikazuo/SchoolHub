@@ -51,8 +51,6 @@
                                 <span asp-validation-for="SelectedRole" class="text-danger"></span>
                             </div>
 
-                            <fieldset>
-                                <legend>Documentos:</legend>
                                 <span asp-validation-for="Documentos" class="text-danger"></span>
                                 <div class="form-group">
                                     <input type="hidden" value="0" id="qtdDiv" name="qtdDiv" />
@@ -61,9 +59,8 @@
                                         @await Html.PartialAsync("_CreateOrEditDocumentos", (Model != null && Model.Documentos != null ? Model.Documentos : new List<Documento>()))
 
                                     </div>
-                                    <button type="button" id="btnAddMore" class="btn btn-primary">Adicionar</button>
+                                    <button type="button" id="btnAddMore" class="btn btn-primary">Adicionar documento(s)</button>
                                 </div>
-                            </fieldset>
                         </div>
                     </div>
                     <div class="card-footer text-end">
@@ -90,7 +87,7 @@
             $("#qtdDiv").val(numDiv);
             var divIdName = 'div_' + numDiv + 'Documento';
             var htmlbtn = `
-                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                 <div class="d-grid gap-2 justify-content-end">
                      <button type="button" onclick="removeItem('${divIdName}')" class="btn-close" aria-label="Close"></button>
                  </div>`;
 
