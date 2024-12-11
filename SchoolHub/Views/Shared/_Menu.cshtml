@@ -156,7 +156,7 @@
                         </span>
                     </a>
                 </li>
-                @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin")))
+                @if (User.Identity.IsAuthenticated && (User.IsInRole("SuperAdmin")))
                 {
                     <li class="nav-item">
                         <a class="nav-link" asp-area="AdminSchoolHub" asp-controller="Tennants" asp-action="Index">

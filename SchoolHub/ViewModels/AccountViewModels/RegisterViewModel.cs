@@ -6,7 +6,7 @@ namespace SchoolHub.Mvc.ViewModels.AccountViewModels
     public class RegisterViewModel : Usuario
     {
         [Required]
-        [Display(Name = "Login")]
+        [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Informe um endereço de email válido.")]
         public string UserName { get; set; }
 

@@ -1,0 +1,27 @@
+﻿﻿@using HtmlHelpers.BeginCollectionItemCore;
+@model SchoolHub.Common.Models.Usuarios.Documento
+@{
+    Guid GuidZero = Guid.Parse("00000000-0000-0000-0000-000000000000");
+}
+
+@using (Html.BeginCollectionItem("Documentos"))
+{
+    <div class="row">
+        <div class="mb-3 col-md-4">
+            <label asp-for="Tipo" class="form-label"></label>
+            <select asp-for="Tipo" class="form-select" asp-items="ViewBag.Tipo">
+            </select>
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-md-4">
+            <label asp-for="Numero" class="form-label"></label>
+            <input asp-for="Numero" class="form-control" />
+            <span asp-validation-for="Numero" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-md-4">
+            <label asp-for="DataEmissao" class="form-label"></label>
+            <input asp-for="DataEmissao" class="form-control" />
+            <span asp-validation-for="DataEmissao" class="text-danger"></span>
+        </div>
+    </div>
+}

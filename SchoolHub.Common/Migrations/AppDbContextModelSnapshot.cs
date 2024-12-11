@@ -234,6 +234,39 @@ namespace SchoolHub.Common.Migrations
                     b.ToTable("Turmas");
                 });
 
+            modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Documento", b =>
+                {
+                    b.Property<Guid>("DocumentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2(2)");
+
+                    b.Property<DateTime?>("DataEmissao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataModificado")
+                        .HasColumnType("datetime2(2)");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("DocumentoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Documentos");
+                });
+
             modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Funcao", b =>
                 {
                     b.Property<Guid>("Id")
@@ -278,10 +311,6 @@ namespace SchoolHub.Common.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cpf")
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2(2)");
@@ -442,6 +471,15 @@ namespace SchoolHub.Common.Migrations
                     b.Navigation("Tennant");
                 });
 
+            modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Documento", b =>
+                {
+                    b.HasOne("SchoolHub.Common.Models.Usuarios.Usuario", "Usuario")
+                        .WithMany("Documentos")
+                        .HasForeignKey("UsuarioId");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Usuario", b =>
                 {
                     b.HasOne("SchoolHub.Common.Models.Tennant", "Tennant")
@@ -474,6 +512,8 @@ namespace SchoolHub.Common.Migrations
 
             modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Usuario", b =>
                 {
+                    b.Navigation("Documentos");
+
                     b.Navigation("Presencas");
                 });
 #pragma warning restore 612, 618

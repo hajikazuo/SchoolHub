@@ -29,7 +29,7 @@ namespace SchoolHub.Common.Repositories.Implementation
 
         public async Task<Usuario> GetByIdAsync(Guid id)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Usuarios.Include(d => d.Documentos).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<IdentityResult> CreateAsync(Usuario usuario, string password)

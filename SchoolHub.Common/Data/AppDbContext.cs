@@ -19,6 +19,7 @@ namespace SchoolHub.Common.Data
         public DbSet<Tennant> Tennants { get; set; }
         public DbSet<Turma> Turmas { get; set; }
         public DbSet<Presenca> Presencas { get; set; }
+        public DbSet<Documento> Documentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

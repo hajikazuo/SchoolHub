@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Documento>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        var itemId = $"itemsAdded_{Guid.NewGuid()}";
+
+        <div id="@itemId">
+
+            <div class="d-grid gap-2 justify-content-md-end">
+                <button type="button" onclick="removeItem('@itemId')" class="btn-close" aria-label="Close"></button>
+            </div>
+
+            @await Html.PartialAsync("Documentos", item)
+        </div>
+    }
+}

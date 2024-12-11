@@ -16,12 +16,18 @@
                     <img src="/assets/img/usuarios/@Model.Imagem" alt="Imagem do usuário" class="avatar avatar-xl mb-3 rounded" onerror="ImgError(this)">
                     <p><strong>@Html.DisplayNameFor(model => model.Nome):</strong> @Model.Nome</p>
                     <p><strong>Função:</strong> @ViewData["Funcao"]</p>
-                    <p><strong>@Html.DisplayNameFor(model => model.Email):</strong> <a href="mailto:@Model.Email">@Model.Email</a></p>
-                    <p><strong>@Html.DisplayNameFor(model => model.Cpf):</strong>@Model.Cpf</p>
-                    <p>
-                        <strong>@Html.DisplayNameFor(model => model.Celular):</strong>
-                        <a href="https://wa.me/@Model.Celular" target="_blank">@Model.Celular</a>
-                    </p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Email):</strong> <a href="mailto:@Model.Email"> @Model.Email</a></p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Celular):</strong> @Model.Celular</p>
+                    @foreach (var item in Model.Documentos)
+                    {
+                        <p>
+                            <strong>@item.Tipo:</strong> @item.Numero
+                            @if (item.DataEmissao.HasValue)
+                            {
+                                <span> - Data de emissão: @item.DataEmissao.Value.ToString("dd/MM/yyyy")</span>
+                            }
+                        </p>
+                    }
                 </div>
                 <div class="card-footer text-end">
                     <div class="d-flex">

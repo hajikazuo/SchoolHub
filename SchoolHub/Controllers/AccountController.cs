@@ -9,6 +9,7 @@ using SchoolHub.Common.Data;
 using SchoolHub.Common.Models.Enums;
 using SchoolHub.Common.Models.Usuarios;
 using SchoolHub.Common.Repositories.Interface;
+using SchoolHub.Mvc.Extensions;
 using SchoolHub.Mvc.Services.Interface;
 using SchoolHub.Mvc.ViewModels.AccountViewModels;
 
@@ -73,9 +74,9 @@ namespace SchoolHub.Mvc.Controllers
                     UserName = model.UserName,
                     Nome = model.Nome,
                     Email = model.UserName,
-                    Cpf = model.Cpf,
                     Celular = model.Celular,
-                    Imagem = await _uploadService.UploadFoto(file, PastaUpload.FotoUsuario)
+                    Imagem = await _uploadService.UploadFoto(file, PastaUpload.FotoUsuario),
+                    Documentos = model.Documentos
                 };
 
                 var result = await _usuarioRepository.CreateAsync(usuario, model.Password);
@@ -96,6 +97,7 @@ namespace SchoolHub.Mvc.Controllers
             }
 
             ViewData["Funcoes"] = new SelectList(await _usuarioRepository.GetAllRolesAsync(), "Id", "Nome");
+            ViewData["Tipo"] = this.MontarSelectListParaEnum(new TipoDocumento());
             return View(model);
         }
 
@@ -115,14 +117,15 @@ namespace SchoolHub.Mvc.Controllers
                 Id = usuarioDb.Id,
                 UserName = usuarioDb.UserName ?? String.Empty,
                 Nome = usuarioDb.Nome,
-                Cpf = usuarioDb.Cpf,
                 Celular = usuarioDb.Celular,
                 Imagem = usuarioDb.Imagem,
-                SelectedRole = funcao.FirstOrDefault()
+                SelectedRole = funcao.FirstOrDefault(),
+                Documentos = usuarioDb.Documentos
             };
 
             ViewData["ReturnUrl"] = returnUrl;
             ViewData["Funcoes"] = new SelectList(await _usuarioRepository.GetAllRolesAsync(), "Id", "Nome");
+            ViewData["Tipo"] = this.MontarSelectListParaEnum(new TipoDocumento());
             return View(model);
         }
 
@@ -146,8 +149,8 @@ namespace SchoolHub.Mvc.Controllers
                 usuario.UserName = model.UserName;
                 usuario.Nome = model.Nome;
                 usuario.Email = model.UserName;
-                usuario.Cpf = model.Cpf;
                 usuario.Celular = model.Celular;
+                usuario.Documentos = model.Documentos;
 
                 if (file != null)
                 {
@@ -172,6 +175,7 @@ namespace SchoolHub.Mvc.Controllers
                 }
             }
             ViewData["Funcoes"] = new SelectList(await _usuarioRepository.GetAllRolesAsync(), "Id", "Nome");
+            ViewData["Tipo"] = this.MontarSelectListParaEnum(new TipoDocumento());
             return View(model);
         }
 
@@ -247,6 +251,12 @@ namespace SchoolHub.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [ResponseCache(NoStore = true, Duration = 0)]
+        public async Task<IActionResult> NewDocumento()
+        {
+            ViewData["Tipo"] = this.MontarSelectListParaEnum(new TipoDocumento());
+            return PartialView("Documentos", new Documento());
+        }
 
         [HttpGet]
         [AllowAnonymous]

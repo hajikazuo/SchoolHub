@@ -93,7 +93,6 @@ namespace SchoolHub.Common.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Cpf = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true),
                     Celular = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Imagem = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     TennantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -217,6 +216,28 @@ namespace SchoolHub.Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Documentos",
+                columns: table => new
+                {
+                    DocumentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Tipo = table.Column<int>(type: "int", nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DataEmissao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2(2)", nullable: false),
+                    DataModificado = table.Column<DateTime>(type: "datetime2(2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Documentos", x => x.DocumentoId);
+                    table.ForeignKey(
+                        name: "FK_Documentos_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Presencas",
                 columns: table => new
                 {
@@ -296,6 +317,11 @@ namespace SchoolHub.Common.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Documentos_UsuarioId",
+                table: "Documentos",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Presencas_TurmaId",
                 table: "Presencas",
                 column: "TurmaId");
@@ -328,6 +354,9 @@ namespace SchoolHub.Common.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Documentos");
 
             migrationBuilder.DropTable(
                 name: "Presencas");

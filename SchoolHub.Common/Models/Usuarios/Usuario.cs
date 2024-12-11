@@ -16,9 +16,6 @@ namespace SchoolHub.Common.Models.Usuarios
         [Display(Name = "Nome completo")]
         public string Nome { get; set; }
 
-        [MaxLength(14)]
-        public string? Cpf { get; set; }
-
         [MaxLength(20)]
         public string? Celular { get; set; }
 
@@ -31,7 +28,15 @@ namespace SchoolHub.Common.Models.Usuarios
 
         public virtual Tennant? Tennant { get; set; }
         public virtual Turma? Turma { get; set; }
+        
         public virtual ICollection<Presenca>? Presencas { get; set; }
+
+        public List<Documento> Documentos { get; set; } = new List<Documento>();
+
+        public void AddDocumento(Documento documento)
+        {
+            Documentos.Add(documento);
+        }
 
         #region Interface
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

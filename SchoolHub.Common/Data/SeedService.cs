@@ -18,6 +18,7 @@ namespace SchoolHub.Common.Data
         private readonly RoleManager<Funcao> _roleManager;
         private readonly AppDbContext _context;
 
+        private const string SuperAdmin = "SuperAdmin";
         private const string Admin = "Admin";
         private const string Professor = "Professor";
         private const string Aluno = "Aluno";
@@ -34,10 +35,11 @@ namespace SchoolHub.Common.Data
         public void Seed()
         {
             CreateTennant().GetAwaiter().GetResult();
+            CreateRole(SuperAdmin).GetAwaiter().GetResult();
             CreateRole(Admin).GetAwaiter().GetResult();
             CreateRole(Professor).GetAwaiter().GetResult();
             CreateRole(Aluno).GetAwaiter().GetResult();
-            CreateUser("admin@escola.com.br", name: "Administrador", "Teste@2024", roles: new List<string> { Admin, Professor, Aluno }, TennantIDModel).GetAwaiter().GetResult();
+            CreateUser("admin@escola.com.br", name: "Administrador", "Teste@2024", roles: new List<string> { SuperAdmin, Admin, Professor, Aluno }, TennantIDModel).GetAwaiter().GetResult();
         }
 
         private async Task<IdentityResult> CreateUser(string email, string name, string password, IEnumerable<string> roles, Guid? tennantId = null)
