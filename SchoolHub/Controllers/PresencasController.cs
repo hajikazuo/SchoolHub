@@ -57,7 +57,7 @@ namespace SchoolHub.Mvc.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(DateTime dataAula, [FromForm] Dictionary<string, string> presenca)
+        public async Task<IActionResult> Create(DateTime dataAula, [FromForm] Dictionary<Guid, PresencaStatus> presenca)
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var turmaId = currentUser.TurmaId;
@@ -67,21 +67,17 @@ namespace SchoolHub.Mvc.Controllers
                 return NotFound();
             }
 
-            foreach (var (usuarioId, statusStr) in presenca)
+            foreach (var (usuarioId, status) in presenca)
             {
-                if (Guid.TryParse(usuarioId, out var parsedGuid) &&
-                    Enum.TryParse<PresencaStatus>(statusStr, out var status))
+                var novaPresenca = new Presenca
                 {
-                    var novaPresenca = new Presenca
-                    {
-                        DataAula = dataAula,
-                        Status = status,
-                        TurmaId = (Guid)turmaId,
-                        UsuarioId = parsedGuid
-                    };
+                    DataAula = dataAula,
+                    Status = status,
+                    TurmaId = (Guid)turmaId,
+                    UsuarioId = usuarioId
+                };
 
-                    _context.Presencas.Add(novaPresenca);
-                }
+                _context.Presencas.Add(novaPresenca);
             }
 
             await _context.SaveChangesAsync();
