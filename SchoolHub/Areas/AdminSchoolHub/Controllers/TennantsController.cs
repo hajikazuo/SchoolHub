@@ -13,8 +13,8 @@ namespace SchoolHub.Mvc.Areas.AdminSchoolHub.Controllers
     public class TennantsController : Controller
     {
         private readonly ITennantRepository _tennantRepository;
-        private readonly IUploadFotoService _uploadService;
-        public TennantsController(ITennantRepository tennantRepository, IUploadFotoService uploadService, ICombProvider comb, AppDbContext context) : base(comb, context)
+        private readonly IUploadService _uploadService;
+        public TennantsController(ITennantRepository tennantRepository, IUploadService uploadService, ICombProvider comb, AppDbContext context) : base(comb, context)
         {
             _tennantRepository = tennantRepository;
             _uploadService = uploadService;

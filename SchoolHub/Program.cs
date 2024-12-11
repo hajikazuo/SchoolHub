@@ -19,7 +19,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IPresencaRepository, PresencaRepository>();
 
 builder.Services.AddScoped<ISeedService, SeedService>();
-builder.Services.AddScoped<IUploadFotoService, UploadFotoService>();
+builder.Services.AddScoped<IUploadService, uploadService>();
 
 builder.Services.AddSingleton(RT.Comb.Provider.Sql);
 

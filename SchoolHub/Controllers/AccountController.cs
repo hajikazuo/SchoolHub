@@ -19,12 +19,12 @@ namespace SchoolHub.Mvc.Controllers
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IUploadFotoService _uploadService;
-        public AccountController(IUsuarioRepository usuarioRepository, IUploadFotoService uploadFotoService, ICombProvider comb, AppDbContext context, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager) : base(comb, context, userManager)
+        private readonly IUploadService _uploadService;
+        public AccountController(IUsuarioRepository usuarioRepository, IUploadService uploadService, ICombProvider comb, AppDbContext context, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager) : base(comb, context, userManager)
         {
             _signInManager = signInManager;
             _usuarioRepository = usuarioRepository;
-            _uploadService = uploadFotoService;
+            _uploadService = uploadService;
         }
 
         public async Task<IActionResult> Index()
@@ -259,6 +259,44 @@ namespace SchoolHub.Mvc.Controllers
         }
 
         [HttpGet]
+        public IActionResult CadastrarEmMassa()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarEmMassa(IFormFile arquivoExcel)
+        {
+            if (arquivoExcel == null || arquivoExcel.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var usuarios = await _uploadService.ProcessarExcel(arquivoExcel);
+
+            if (usuarios != null)
+            {
+                foreach (var usuario in usuarios)
+                {
+                    usuario.Id = _comb.Create();
+                    usuario.TennantId = this._tennantIdUsuarioLogado;
+                    var result = await _userManager.CreateAsync(usuario, "SenhaPadrao123!");
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(usuario, "Aluno");
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
@@ -301,7 +339,7 @@ namespace SchoolHub.Mvc.Controllers
             return View();
         }
 
-          private void AddErrors(IdentityResult result)
+        private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
             {

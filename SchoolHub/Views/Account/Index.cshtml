@@ -7,10 +7,16 @@
 
 <div class="container-xl">
     <div class="mb-3">
-        <a asp-action="Create" class="btn btn-primary d-none d-sm-inline-block">
-            <i class="ti ti-plus"></i>
-            Cadastrar
-        </a>
+        <div class="btn-list flex-nowrap">
+            <a asp-action="Create" class="btn btn-primary d-none d-sm-inline-block">
+                <i class="ti ti-plus"></i>
+                Cadastrar
+            </a>
+            <a asp-action="CadastrarEmMassa" class="btn btn-success d-none d-sm-inline-block">
+                <i class="ti ti-file-type-xls"></i>
+                Cadastro em lote
+            </a>
+        </div>
     </div>
     <div class="row row-cards">
         <div class="col-12">
