@@ -9,6 +9,7 @@ using SchoolHub.Common.Models.Usuarios;
 using SchoolHub.Common.Repositories.Implementation;
 using SchoolHub.Common.Repositories.Interface;
 using SchoolHub.Mvc.Extensions;
+using SchoolHub.Mvc.ViewModels;
 
 namespace SchoolHub.Mvc.Controllers
 {
@@ -24,8 +25,7 @@ namespace SchoolHub.Mvc.Controllers
 
         public async Task<IActionResult> Index(DateTime? dataFiltro = null)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var turmaIdDoUsuario = currentUser.TurmaId;
+            var turmaId = _turmaUsuarioLogado;
             var dataAtual = DateTime.Today;
 
             if (dataFiltro == null)
@@ -33,48 +33,55 @@ namespace SchoolHub.Mvc.Controllers
                 dataFiltro = dataAtual;
             }
 
-            var presencasNaTurma = await _presencaRepository.GetAllAsync(turmaIdDoUsuario, dataFiltro.Value);
+            var presencasNaTurma = await _presencaRepository.GetAllAsync(turmaId, dataFiltro.Value);
 
             ViewBag.DataAtual = dataAtual;
             ViewBag.DataFiltro = dataFiltro;
             return View(presencasNaTurma);
         }
 
-        public async Task<IActionResult> Create(DateTime dataAula)
+        public async Task<IActionResult> Create()
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var turmaId = currentUser.TurmaId;
+            var turmaId = _turmaUsuarioLogado;
 
-            if(turmaId == null)
+            if (turmaId == default)
             {
                 return NotFound();
             }
 
-            var turma = await _turmaRepository.GetByIdAsync((Guid)turmaId);
-            ViewData["DataAula"] = dataAula;
+            var turma = await _turmaRepository.GetByIdAsync(turmaId);
+            var viewModel = new PresencaViewModel
+            {
+                DataAula = DateTime.Today,
+                Alunos = turma.Usuarios.Select(u => new PresencaAlunoViewModel
+                {
+                    UsuarioId = u.Id,
+                    Nome = u.Nome
+                }).ToList()
+            };
             ViewData["Status"] = this.MontarSelectListParaEnum(new PresencaStatus());
-            return View(turma);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(DateTime dataAula, [FromForm] Dictionary<Guid, PresencaStatus> presenca)
+        public async Task<IActionResult> Create(PresencaViewModel viewModel)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            var turmaId = currentUser.TurmaId;
+            var turmaId = _turmaUsuarioLogado;
 
-            if (turmaId == null)
+            if (turmaId == default)
             {
                 return NotFound();
             }
 
-            foreach (var (usuarioId, status) in presenca)
+            foreach (var aluno in viewModel.Alunos)
             {
                 var novaPresenca = new Presenca
                 {
-                    DataAula = dataAula,
-                    Status = status,
-                    TurmaId = (Guid)turmaId,
-                    UsuarioId = usuarioId
+                    DataAula = viewModel.DataAula,
+                    Status = aluno.Status,
+                    TurmaId = turmaId,
+                    UsuarioId = aluno.UsuarioId,
+                    Observacoes = aluno.Observacoes
                 };
 
                 _context.Presencas.Add(novaPresenca);
@@ -85,5 +92,59 @@ namespace SchoolHub.Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var presenca = await _presencaRepository.GetByIdAsync(id.Value);
+
+            if (presenca == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Status"] = this.MontarSelectListParaEnum(new PresencaStatus());
+            return View(presenca);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, Presenca presenca)
+        {
+            if (id != presenca.PresencaId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _presencaRepository.UpdateAsync(presenca);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(presenca);
+        }
+
+        public async Task<IActionResult> PresencasPorUsuario(Guid? id, DateTime? dataFiltro = null)
+        {
+            var dataAtual = DateTime.Today;
+
+            if (dataFiltro == null)
+            {
+                dataFiltro = dataAtual;
+            }
+
+            var presencasDoUsuario = await _presencaRepository.GetByUserAsync(id, dataFiltro.Value);
+
+            ViewBag.totalFaltas = presencasDoUsuario.Count(p => p.Status == PresencaStatus.Ausente);
+            ViewBag.DataAtual = dataAtual;
+            ViewBag.DataFiltro = dataFiltro;
+
+            return View(presencasDoUsuario);
+        }
     }
 }

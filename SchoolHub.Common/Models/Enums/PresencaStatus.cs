@@ -10,5 +10,6 @@ namespace SchoolHub.Common.Models.Enums
     {
         Ausente = 0,
         Presente = 1,
+        Justificado = 2
     }
 }

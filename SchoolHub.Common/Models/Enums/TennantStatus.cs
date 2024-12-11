@@ -9,6 +9,6 @@ namespace SchoolHub.Common.Models.Enums
     public enum TennantStatus
     {
         Inativo = 0,
-        Ativo = 1,       
+        Ativo = 1
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SchoolHub.Common.Models.Turma
+﻿@model SchoolHub.Mvc.ViewModels.PresencaViewModel
 
 @{
     var pageName = "Cadastrar presença";
@@ -11,7 +11,7 @@
             <div class="mb-3">
                 <div class="form-group my-3">
                     <label for="dataAula" class="form-label">Data da Aula:</label>
-                    <input type="date" id="dataAula" name="dataAula" class="form-control" required>
+                    <input type="date" id="dataAula" name="DataAula" class="form-control" required value="@Model.DataAula.ToString("yyyy-MM-dd")">
                 </div>
             </div>
         </div>
@@ -31,18 +31,24 @@
                                     <th>
                                         Confirmar presença
                                     </th>
+                                    <th>
+                                        Observações
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.Usuarios)
+                                @foreach (var aluno in Model.Alunos)
                                 {
-
                                     <tr>
+                                        <input type="hidden" name="Alunos[@Model.Alunos.IndexOf(aluno)].UsuarioId" value="@aluno.UsuarioId" />
                                         <td>
-                                            @item.Nome
+                                            @aluno.Nome
                                         </td>
                                         <td>
-                                            <select name="presenca[@item.Id]" class="form-control" asp-items="ViewBag.Status"></select>
+                                            <select name="Alunos[@Model.Alunos.IndexOf(aluno)].Status" class="form-control" asp-items="ViewBag.Status"></select>
+                                        </td>
+                                        <td>
+                                            <textarea name="Alunos[@Model.Alunos.IndexOf(aluno)].Observacoes" class="form-control">@aluno.Observacoes</textarea>
                                         </td>
                                     </tr>
                                 }
@@ -60,5 +66,3 @@
         </div>
     </form>
 </div>
-
-

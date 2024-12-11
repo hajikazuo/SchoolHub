@@ -10,5 +10,8 @@ namespace SchoolHub.Common.Repositories.Interface
     public interface IPresencaRepository
     {
         Task<List<Presenca>> GetAllAsync(Guid? turmaId, DateTime dataFiltro);
+        Task<Presenca> GetByIdAsync(Guid id);
+        Task<List<Presenca>> GetByUserAsync(Guid? id, DateTime dataFiltro);
+        Task<Presenca> UpdateAsync(Presenca presenca);
     }
 }

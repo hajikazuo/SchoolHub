@@ -38,29 +38,29 @@ namespace SchoolHub.Common.Repositories.Implementation
 
         public async Task<Tennant> UpdateAsync(Tennant tennant)
         {
-            var existingTennant = await _context.Tennants.FirstOrDefaultAsync(t => t.TennantId == tennant.TennantId);
+            var tennantExistente = await _context.Tennants.FirstOrDefaultAsync(t => t.TennantId == tennant.TennantId);
 
-            if (existingTennant is null)
+            if (tennantExistente is null)
             {
                 return null;
             }
 
-            _context.Entry(existingTennant).CurrentValues.SetValues(tennant);
+            _context.Entry(tennantExistente).CurrentValues.SetValues(tennant);
             await _context.SaveChangesAsync();
-            return existingTennant;
+            return tennantExistente;
         }
 
         public async Task<Tennant> DeleteAsync(Guid id)
         {
-            var existingTennant = await _context.Tennants.FirstOrDefaultAsync(t => t.TennantId == id);
-            if (existingTennant is null)
+            var tennantExistente = await _context.Tennants.FirstOrDefaultAsync(t => t.TennantId == id);
+            if (tennantExistente is null)
             {
                 return null;
             }
 
-            _context.Tennants.Remove(existingTennant);
+            _context.Tennants.Remove(tennantExistente);
             await _context.SaveChangesAsync();
-            return existingTennant;
+            return tennantExistente;
         }
     }
 }

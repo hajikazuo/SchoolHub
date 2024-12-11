@@ -16,6 +16,7 @@ namespace SchoolHub.Mvc.Controllers
         protected readonly UserManager<Usuario> _userManager;
 
         public Guid _tennantIdUsuarioLogado { get; set; }
+        public Guid _turmaUsuarioLogado { get; set; }
 
         public Controller(ICombProvider comb, AppDbContext context, UserManager<Usuario> userManager)
         {
@@ -30,6 +31,7 @@ namespace SchoolHub.Mvc.Controllers
             {
                 var thisUser = _userManager.FindByNameAsync(this.User.Identity.Name).GetAwaiter().GetResult();
                 _tennantIdUsuarioLogado = thisUser.TennantId ?? Guid.Empty;
+                _turmaUsuarioLogado = thisUser.TurmaId ?? Guid.Empty;
 
                 var logo = _context.Tennants.Find(_tennantIdUsuarioLogado)?.Logo;
                 ViewBag.Logo = $"/assets/img/logo/{logo}";
