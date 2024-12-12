@@ -118,7 +118,9 @@
 
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a class="dropdown-item" asp-controller="Account" asp-action="Edit" asp-route-id="@usuario.Id">Minha conta</a>
-                        <partial name="_LoginPartial.cshtml" />
+                        @{
+                            await Html.RenderPartialAsync("_LoginPartial");
+                        }
                     </div>
                 }
             </div>

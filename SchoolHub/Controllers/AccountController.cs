@@ -12,6 +12,7 @@ using SchoolHub.Common.Repositories.Interface;
 using SchoolHub.Mvc.Extensions;
 using SchoolHub.Mvc.Services.Interface;
 using SchoolHub.Mvc.ViewModels.AccountViewModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SchoolHub.Mvc.Controllers
 {
@@ -31,6 +32,7 @@ namespace SchoolHub.Mvc.Controllers
         {
             var tennantid = this._tennantIdUsuarioLogado;
             var usuarios = await _usuarioRepository.GetAllAsync(tennantid);
+            ViewBag.Confirm = TempData["Confirm"];
             return View(usuarios);
         }
 
@@ -91,6 +93,7 @@ namespace SchoolHub.Mvc.Controllers
                         await _userManager.AddToRoleAsync(usuario, model.SelectedRole);
                     }
 
+                    TempData["Confirm"] = " <script>$(document).ready(function(){MostraConfirm('Sucesso','Cadastrado com sucesso');})</script>";
                     return RedirectToAction(nameof(Index));
                 }
                 AddErrors(result);
@@ -115,7 +118,7 @@ namespace SchoolHub.Mvc.Controllers
             var model = new RegisterViewModel
             {
                 Id = usuarioDb.Id,
-                UserName = usuarioDb.UserName ?? String.Empty,
+                UserName = usuarioDb.UserName,
                 Nome = usuarioDb.Nome,
                 Celular = usuarioDb.Celular,
                 Imagem = usuarioDb.Imagem,
@@ -171,6 +174,8 @@ namespace SchoolHub.Mvc.Controllers
                         await _userManager.RemoveFromRolesAsync(usuario, funcoesUsuario);
                         await _userManager.AddToRoleAsync(usuario, model.SelectedRole);
                     }
+
+                    TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Atualizado com sucesso!');})</script>";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -189,6 +194,7 @@ namespace SchoolHub.Mvc.Controllers
                 var result = await _usuarioRepository.DeleteAsync(usuario);
                 if (result.Succeeded)
                 {
+                    TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Excluído com sucesso!');})</script>";
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -244,6 +250,7 @@ namespace SchoolHub.Mvc.Controllers
             var updateResult = await _usuarioRepository.UpdateAsync(user);
             if (updateResult.Succeeded)
             {
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Senha atualizada com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             AddErrors(updateResult);
@@ -267,15 +274,12 @@ namespace SchoolHub.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarEmMassa(IFormFile arquivoExcel)
         {
-            if (arquivoExcel == null || arquivoExcel.Length == 0)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             var usuarios = await _uploadService.ProcessarExcel(arquivoExcel);
 
             if (usuarios != null)
             {
+                bool usuariosComErro = false;   
+
                 foreach (var usuario in usuarios)
                 {
                     usuario.Id = _comb.Create();
@@ -287,11 +291,23 @@ namespace SchoolHub.Mvc.Controllers
                     }
                     else
                     {
-                        continue;
+                        usuariosComErro = true;
                     }
                 }
+
+                if (usuariosComErro)
+                {
+                    TempData["Confirm"] = "<script>$(document).ready(function () {MostraErro('Erro', 'Alguns usuários da tabela não foram cadastrados.');})</script>";
+                }
+                else
+                {
+                    TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Usuário(s) cadastrado(s) com sucesso!');})</script>";
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraErro('Erro', 'Erro ao processar o arquivo!');})</script>";
             return RedirectToAction(nameof(Index));
         }
 

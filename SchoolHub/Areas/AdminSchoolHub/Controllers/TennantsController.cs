@@ -23,6 +23,7 @@ namespace SchoolHub.Mvc.Areas.AdminSchoolHub.Controllers
         public async Task<IActionResult> Index()
         {
             var tennants = await _tennantRepository.GetAllAsync();
+            ViewBag.Confirm = TempData["Confirm"];
             return View(tennants);
         }
 
@@ -58,6 +59,7 @@ namespace SchoolHub.Mvc.Areas.AdminSchoolHub.Controllers
                 tennant.TennantId = _comb.Create();
                 tennant.Logo = await _uploadService.UploadFoto(file, PastaUpload.LogoTennant);
                 await _tennantRepository.CreateAsync(tennant);
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Cadastrado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Status"] = this.MontarSelectListParaEnum(new TennantStatus());
@@ -97,6 +99,7 @@ namespace SchoolHub.Mvc.Areas.AdminSchoolHub.Controllers
                 }
 
                 await _tennantRepository.UpdateAsync(tennant);
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Atualizado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -125,7 +128,7 @@ namespace SchoolHub.Mvc.Areas.AdminSchoolHub.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _tennantRepository.DeleteAsync(id);
-
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Excluído com sucesso!');})</script>";
             return RedirectToAction(nameof(Index));
         }
     }

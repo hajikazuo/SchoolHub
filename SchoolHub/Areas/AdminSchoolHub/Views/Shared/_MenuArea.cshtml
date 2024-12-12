@@ -16,7 +16,7 @@
             <div class="d-lg-flex">
                 <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
                    data-bs-placement="bottom">
-                   <i class="ti ti-moon"></i>
+                    <i class="ti ti-moon"></i>
                 </a>
                 <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
                    data-bs-placement="bottom">
@@ -44,16 +44,13 @@
                             await Html.RenderPartialAsync("_LoginPartial");
                         }
                     </div>
-                }            
+                }
             </div>
         </div>
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
                 <li class="nav-item">
-                    <span class="nav-link"><strong>Menu</strong></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <a class="nav-link" asp-area="AdminSchoolHub" asp-controller="Home" asp-action="Index">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="ti ti-home"></i>
                         </span>
@@ -62,49 +59,13 @@
                         </span>
                     </a>
                 </li>
-                @if (User.Identity.IsAuthenticated && (User.IsInRole("SuperAdmin")))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="AdminSchoolHub" asp-controller="Home" asp-action="Index">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <i class="ti ti-settings"></i>
-                            </span>
-                            <span class="nav-link-title">
-                                Área administrativa
-                            </span>
-                        </a>
-                    </li>
-                }
                 <li class="nav-item">
-                    <span class="nav-link"><strong>Cadastros</strong></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Turmas" asp-action="Index">
+                    <a class="nav-link" asp-area="AdminSchoolHub" asp-controller="Tennants" asp-action="Index">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-users"></i>
+                            <i class="ti ti-school"></i>
                         </span>
                         <span class="nav-link-title">
-                            Turmas
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-user-circle"></i>
-                        </span>
-                        <span class="nav-link-title">
-                            Usuários
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Presencas" asp-action="Index">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-check"></i>
-                        </span>
-                        <span class="nav-link-title">
-                            Presenças
+                            Escolas
                         </span>
                     </a>
                 </li>

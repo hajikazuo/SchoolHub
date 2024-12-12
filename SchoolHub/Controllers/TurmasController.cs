@@ -26,6 +26,7 @@ namespace SchoolHub.Mvc.Controllers
         {
             var tennantid = this._tennantIdUsuarioLogado;
             var turma = await _turmaRepository.GetAllAsync(tennantid);
+            ViewBag.Confirm = TempData["Confirm"];
             return View(turma);
         }
 
@@ -46,7 +47,7 @@ namespace SchoolHub.Mvc.Controllers
             }
 
             ViewData["UsuariosSemTurma"] = await _context.Users.Where(t => t.TennantId == tennantid && t.Turma == null).ToListAsync();
-
+            ViewBag.Confirm = TempData["Confirm"];
             return View(turma);
         }
 
@@ -68,6 +69,7 @@ namespace SchoolHub.Mvc.Controllers
                 turma.TennantId = tennantid;
 
                 var response = await _turmaRepository.CreateAsync(turma);
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Cadastrado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             return View(turma);
@@ -103,6 +105,7 @@ namespace SchoolHub.Mvc.Controllers
             {
                 await _turmaRepository.UpdateAsync(turma);
 
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Atualizado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             return View(turma);
@@ -130,6 +133,7 @@ namespace SchoolHub.Mvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _turmaRepository.DeleteAsync(id);
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Excluído com sucesso!');})</script>";
             return RedirectToAction(nameof(Index));
         }
 
@@ -151,6 +155,8 @@ namespace SchoolHub.Mvc.Controllers
 
             _context.UpdateRange(usuarios); 
             await _context.SaveChangesAsync();
+
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Usuários adicionados com sucesso!');})</script>";
             return RedirectToAction(nameof(Details), new { id = turmaId });
         }
 
@@ -171,7 +177,9 @@ namespace SchoolHub.Mvc.Controllers
                 usuario.TurmaId = null;   
             }
             _context.UpdateRange(usuarios);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
+
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Usuários removidos com sucesso!');})</script>";
             return RedirectToAction(nameof(Details), new { id = turmaId }); 
         }
     }

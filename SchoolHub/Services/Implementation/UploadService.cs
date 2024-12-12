@@ -41,14 +41,9 @@ namespace SchoolHub.Mvc.Services.Implementation
             return fileName;
         }
 
-        public async Task<List<Usuario>> ProcessarExcel(IFormFile arquivoExcel)
+        public async Task<List<Usuario>> ProcessarExcel(IFormFile? arquivoExcel)
         {
-            if (arquivoExcel == null || arquivoExcel.Length == 0)
-            {
-                return null;
-            }
-
-            if (!ValidarExtensaoArquivoExcel(arquivoExcel))
+            if (arquivoExcel == null || arquivoExcel.Length == 0 || !ValidarExtensaoArquivoExcel(arquivoExcel))
             {
                 return null;
             }

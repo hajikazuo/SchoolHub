@@ -35,6 +35,7 @@ namespace SchoolHub.Mvc.Controllers
 
             var presencasNaTurma = await _presencaRepository.GetAllAsync(turmaId, dataFiltro.Value);
 
+            ViewBag.Confirm = TempData["Confirm"];
             ViewBag.DataAtual = dataAtual;
             ViewBag.DataFiltro = dataFiltro;
             return View(presencasNaTurma);
@@ -46,7 +47,8 @@ namespace SchoolHub.Mvc.Controllers
 
             if (turmaId == default)
             {
-                return NotFound();
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraErro('Erro', 'Você precisa estar vinculado à uma turma para acessar essa função');})</script>";
+                return RedirectToAction(nameof(Index));
             }
 
             var turma = await _turmaRepository.GetByIdAsync(turmaId);
@@ -70,7 +72,8 @@ namespace SchoolHub.Mvc.Controllers
 
             if (turmaId == default)
             {
-                return NotFound();
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraErro('Erro', 'Você precisa estar vinculado à uma turma para acessar essa função');})</script>";
+                return RedirectToAction(nameof(Index));
             }
 
             foreach (var aluno in viewModel.Alunos)
@@ -88,7 +91,7 @@ namespace SchoolHub.Mvc.Controllers
             }
 
             await _context.SaveChangesAsync();
-
+            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Cadastrado com sucesso!');})</script>";
             return RedirectToAction(nameof(Index));
         }
 
@@ -124,6 +127,7 @@ namespace SchoolHub.Mvc.Controllers
             {
                 await _presencaRepository.UpdateAsync(presenca);
 
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Atualizado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             return View(presenca);

@@ -13,6 +13,6 @@ namespace SchoolHub.Mvc.Services.Interface
     {
         Task<string> UploadFoto(IFormFile file, PastaUpload pastaUpload);
 
-        Task<List<Usuario>> ProcessarExcel(IFormFile arquivoExcel);
+        Task<List<Usuario>> ProcessarExcel(IFormFile? arquivoExcel);
     }
 }

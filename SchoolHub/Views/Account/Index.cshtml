@@ -48,6 +48,7 @@
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                                    <a class="dropdown-item" asp-action="ChangePassword" asp-route-id="@item.Id">Alterar senha</a>
                                                     <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
                                                     <a class="dropdown-item" asp-controller="Presencas" asp-action="PresencasPorUsuario" asp-route-id="@item.Id">Presenças</a>
                                                 </div>
@@ -96,3 +97,6 @@
     </div>
 </div>
 
+@section scripts {
+    @Html.Raw(ViewBag.Confirm)
+}   

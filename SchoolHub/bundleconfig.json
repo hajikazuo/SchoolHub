@@ -1,0 +1,19 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/assets/bundler/js/schoolhub.all.min.js",
+    "inputFiles": [
+      "node_modules/toastr/build/toastr.min.js",
+      "wwwroot/assets/js/script.js",
+      "wwwroot/assets/js/demo.js",
+      "wwwroot/assets/js/tabler.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/assets/bundler/css/schoolhub.all.min.css",
+    "inputFiles": [
+      "node_modules/toastr/build/toastr.min.css",
+      "wwwroot/assets/css/tabler.css",
+      "wwwroot/assets/css/demo.css"
+    ]
+  }
+]
