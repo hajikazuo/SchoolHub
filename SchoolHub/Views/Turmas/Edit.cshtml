@@ -12,7 +12,7 @@
                 <div class="card-header">
                     <h4 class="card-title">@pageName</h4>
                 </div>
-                <form asp-action="Edit" enctype="multipart/form-data">
+                <form asp-action="Edit">
                     <div class="card-body">
                         <div class="row g-5">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -24,6 +24,31 @@
                                 <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
+
+                            @if (ViewData["Disciplinas"] != null)
+                            {
+                                <div class="mb-3">
+                                    <label for="Disciplinas" class="form-label">Disciplinas</label>
+                                    <ul class="list-group">
+                                        @foreach (var disciplina in ViewData["Disciplinas"] as SelectList)
+                                        {
+                                            <li class="list-group-item">
+                                                <label>
+                                                    <input type="checkbox"
+                                                           id="Disciplina_@disciplina.Value"
+                                                           name="disciplinaIds"
+                                                           value="@disciplina.Value"
+                                                    @if (Model.Disciplinas.Any(d => d.DisciplinaId == Guid.Parse(disciplina.Value.ToString())))
+                                                    {
+                                                        @:checked
+                                                    } />
+                                                    @disciplina.Text
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div class="card-footer text-end">

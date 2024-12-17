@@ -1,7 +1,7 @@
-﻿@model SchoolHub.Common.Models.Turma
+﻿@model SchoolHub.Common.Models.Disciplina
 
 @{
-    var pageName = "Cadastrar turma";
+    var pageName = "Editar Disciplina";
     ViewData["Title"] = pageName;
 }
 
@@ -12,36 +12,18 @@
                 <div class="card-header">
                     <h4 class="card-title">@pageName</h4>
                 </div>
-                <form asp-action="Create">
+                <form asp-action="Edit">
                     <div class="card-body">
                         <div class="row g-5">
-
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="DisciplinaId" />
+                            <input type="hidden" asp-for="TennantId" />
 
                             <div class="mb-3">
                                 <label asp-for="Nome" class="form-label"></label>
                                 <input asp-for="Nome" class="form-control" />
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
-
-                            @if (ViewData["Disciplinas"] != null)
-                            {
-                                <div class="mb-3">
-                                    <label for="Disciplinas" class="form-label">Disciplinas</label>
-                                    <ul class="list-group">
-                                        @foreach (var disciplina in ViewData["Disciplinas"] as SelectList)
-                                        {
-                                            <li class="list-group-item">
-                                                <label>
-                                                    <input type="checkbox" id="Disciplina_@disciplina.Value" name="disciplinaIds" value="@disciplina.Value" />
-                                                    @disciplina.Text
-                                                </label>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                            }
-
                         </div>
                     </div>
                     <div class="card-footer text-end">
@@ -55,6 +37,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @{

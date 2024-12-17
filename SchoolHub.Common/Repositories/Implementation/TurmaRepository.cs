@@ -24,6 +24,7 @@ namespace SchoolHub.Common.Repositories.Implementation
             return await _context.Turmas
                 .Include(t => t.Tennant)
                 .Include(u => u.Usuarios)
+                .Include(d => d.Disciplinas)
                 .FirstOrDefaultAsync(c => c.TurmaId == id);
         }
 

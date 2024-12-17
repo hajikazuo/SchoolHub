@@ -6,6 +6,7 @@ using SchoolHub.Common.Models;
 using SchoolHub.Common.Models.Interfaces;
 using SchoolHub.Common.Models.Usuarios;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace SchoolHub.Common.Data
 {
@@ -20,6 +21,7 @@ namespace SchoolHub.Common.Data
         public DbSet<Turma> Turmas { get; set; }
         public DbSet<Presenca> Presencas { get; set; }
         public DbSet<Documento> Documentos { get; set; }
+        public DbSet<Disciplina> Disciplinas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -49,6 +51,21 @@ namespace SchoolHub.Common.Data
                 .WithMany(u => u.Presencas)
                 .HasForeignKey(a => a.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Turma>()
+                .HasMany(t => t.Disciplinas)
+                .WithMany(d => d.Turmas)
+                .UsingEntity<Dictionary<string, object>>(
+                    "TurmaDisciplinas",
+                    j => j.HasOne<Disciplina>()
+                          .WithMany()
+                          .HasForeignKey("DisciplinaId")
+                          .OnDelete(DeleteBehavior.Restrict),  
+                    j => j.HasOne<Turma>()
+                          .WithMany()
+                          .HasForeignKey("TurmaId")
+                          .OnDelete(DeleteBehavior.Restrict)   
+                );
         }
 
         private void ModelStatusModificado<TEntity>(EntityTypeBuilder<TEntity> entity) where TEntity : class, IStatusModificado

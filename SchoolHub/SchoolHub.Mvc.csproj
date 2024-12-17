@@ -29,6 +29,8 @@
   <ItemGroup>
     <Folder Include="Areas\AdminSchoolHub\Data\" />
     <Folder Include="Areas\AdminSchoolHub\Models\" />
+    <Folder Include="wwwroot\assets\bundler\css\" />
+    <Folder Include="wwwroot\assets\bundler\js\" />
     <Folder Include="wwwroot\assets\img\logo\" />
     <Folder Include="wwwroot\assets\img\usuarios\" />
   </ItemGroup>

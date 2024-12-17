@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Turma>
+﻿@model IEnumerable<Disciplina>
 
 @{
-    var pageName = "Listagem de turmas";
+    var pageName = "Listagem de disciplinas";
     ViewData["Title"] = pageName;
 }
 
@@ -20,7 +20,6 @@
                         <thead>
                             <tr>
                                 <th>@Html.DisplayNameFor(model => model.Nome)</th>
-                                <th>@Html.DisplayNameFor(model => model.DataCadastro)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -29,7 +28,6 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.DataCadastro)</td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <div>
@@ -37,12 +35,12 @@
                                                     Ações
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TurmaId">Editar</a>
-                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TurmaId">Detalhes</a>
+                                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.DisciplinaId">Editar</a>
+                                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@item.DisciplinaId">Detalhes</a>
                                                 </div>
                                             </div>
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                    data-id="@item.TurmaId" data-nome="@item.Nome">
+                                                    data-id="@item.DisciplinaId" data-nome="@item.Nome">
                                                 Deletar
                                             </button>
                                         </div>
@@ -87,4 +85,6 @@
 
 @section scripts {
     @Html.Raw(ViewBag.Confirm)
-}   
+}
+
+

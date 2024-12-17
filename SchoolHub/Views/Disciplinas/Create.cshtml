@@ -1,7 +1,7 @@
-﻿@model SchoolHub.Common.Models.Turma
+﻿@model SchoolHub.Common.Models.Disciplina
 
 @{
-    var pageName = "Cadastrar turma";
+    var pageName = "Cadastrar Disciplina";
     ViewData["Title"] = pageName;
 }
 
@@ -24,24 +24,6 @@
                                 <span asp-validation-for="Nome" class="text-danger"></span>
                             </div>
 
-                            @if (ViewData["Disciplinas"] != null)
-                            {
-                                <div class="mb-3">
-                                    <label for="Disciplinas" class="form-label">Disciplinas</label>
-                                    <ul class="list-group">
-                                        @foreach (var disciplina in ViewData["Disciplinas"] as SelectList)
-                                        {
-                                            <li class="list-group-item">
-                                                <label>
-                                                    <input type="checkbox" id="Disciplina_@disciplina.Value" name="disciplinaIds" value="@disciplina.Value" />
-                                                    @disciplina.Text
-                                                </label>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                            }
-
                         </div>
                     </div>
                     <div class="card-footer text-end">
@@ -61,3 +43,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+

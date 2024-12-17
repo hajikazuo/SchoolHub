@@ -1,0 +1,30 @@
+﻿@model Disciplina
+
+@{
+    var pageName = "Detalhes da disciplina";
+    ViewData["Title"] = pageName;
+}
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">@pageName</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>@Html.DisplayNameFor(model => model.Tennant):</strong> @Model.Tennant.Nome</p>
+                    <p><strong>@Html.DisplayNameFor(model => model.Nome):</strong> @Model.Nome</p>    
+                </div>
+                <div class="card-footer text-end">
+                    <div class="d-flex">
+                        <a asp-action="Index" class="btn btn-link">Voltar para a lista</a>
+                        <a asp-action="Edit" asp-route-id="@Model.DisciplinaId" class="btn btn-primary ms-auto">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

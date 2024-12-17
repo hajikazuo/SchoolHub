@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using RT.Comb;
 using SchoolHub.Common.Data;
+using SchoolHub.Common.Migrations;
 using SchoolHub.Common.Models;
 using SchoolHub.Common.Models.Usuarios;
 using SchoolHub.Common.Repositories.Implementation;
 using SchoolHub.Common.Repositories.Interface;
+using SchoolHub.Mvc.Extensions;
 
 namespace SchoolHub.Mvc.Controllers
 {
@@ -54,12 +58,14 @@ namespace SchoolHub.Mvc.Controllers
         public async Task<IActionResult> Create()
         {
             var tennantid = this._tennantIdUsuarioLogado;
+
+            ViewData["Disciplinas"] = new SelectList(await DropDownFunc.DisciplinaAsync(_context, tennantid), "Id", "Nome");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Turma turma)
+        public async Task<IActionResult> Create(Turma turma, List<Guid> disciplinaIds)
         {
             var tennantid = this._tennantIdUsuarioLogado;
 
@@ -68,10 +74,21 @@ namespace SchoolHub.Mvc.Controllers
                 turma.TurmaId = _comb.Create();
                 turma.TennantId = tennantid;
 
-                var response = await _turmaRepository.CreateAsync(turma);
+                foreach (var disciplinaId in disciplinaIds)
+                {
+                    var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(c => c.DisciplinaId == disciplinaId);
+                    if (disciplina != null)
+                    {
+                        turma.Disciplinas.Add(disciplina);
+                    }
+                }
+
+                await _turmaRepository.CreateAsync(turma);
+
                 TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Cadastrado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Disciplinas"] = new SelectList(await DropDownFunc.DisciplinaAsync(_context, tennantid), "Id", "Nome");
             return View(turma);
         }
 
@@ -89,12 +106,13 @@ namespace SchoolHub.Mvc.Controllers
                 return NotFound();
             }
 
+            ViewData["Disciplinas"] = new SelectList(await DropDownFunc.DisciplinaAsync(_context, turma.TennantId), "Id", "Nome");
             return View(turma);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Turma turma)
+        public async Task<IActionResult> Edit(Guid id, Turma turma, List<Guid> disciplinaIds)
         {
             if (id != turma.TurmaId)
             {
@@ -103,29 +121,21 @@ namespace SchoolHub.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
+                foreach (var disciplinaId in disciplinaIds)
+                {
+                    var disciplina = await _context.Disciplinas.FindAsync(disciplinaId);
+                    if (disciplina != null)
+                    {
+                        turma.Disciplinas.Add(disciplina);
+                    }
+                }
+
                 await _turmaRepository.UpdateAsync(turma);
 
                 TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Atualizado com sucesso!');})</script>";
                 return RedirectToAction(nameof(Index));
             }
             return View(turma);
-        }
-
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var classGroup = await _turmaRepository.GetByIdAsync(id.Value);
-
-            if (classGroup == null)
-            {
-                return NotFound();
-            }
-
-            return View(classGroup);
         }
 
         [HttpPost, ActionName("Delete")]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolHub.Common.Data;
 
@@ -11,9 +12,11 @@ using SchoolHub.Common.Data;
 namespace SchoolHub.Common.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212185117_Disciplinas")]
+    partial class Disciplinas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +146,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasIndex("TennantId");
 
-                    b.ToTable("Disciplinas", (string)null);
+                    b.ToTable("Disciplinas");
                 });
 
             modelBuilder.Entity("SchoolHub.Common.Models.Presenca", b =>
@@ -180,7 +183,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Presencas", (string)null);
+                    b.ToTable("Presencas");
                 });
 
             modelBuilder.Entity("SchoolHub.Common.Models.Tennant", b =>
@@ -225,7 +228,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasKey("TennantId");
 
-                    b.ToTable("Tennants", (string)null);
+                    b.ToTable("Tennants");
                 });
 
             modelBuilder.Entity("SchoolHub.Common.Models.Turma", b =>
@@ -252,7 +255,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasIndex("TennantId");
 
-                    b.ToTable("Turmas", (string)null);
+                    b.ToTable("Turmas");
                 });
 
             modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Documento", b =>
@@ -285,7 +288,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Documentos", (string)null);
+                    b.ToTable("Documentos");
                 });
 
             modelBuilder.Entity("SchoolHub.Common.Models.Usuarios.Funcao", b =>
@@ -423,7 +426,7 @@ namespace SchoolHub.Common.Migrations
 
                     b.HasIndex("TurmaId");
 
-                    b.ToTable("TurmaDisciplinas", (string)null);
+                    b.ToTable("TurmaDisciplinas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

@@ -22,6 +22,7 @@ namespace SchoolHub.Common.Models
         public virtual Tennant? Tennant { get; set; }
         public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
         public virtual ICollection<Presenca> Presencas { get; set; } = new List<Presenca>();
+        public virtual ICollection<Disciplina> Disciplinas { get; set; } = new List<Disciplina>();
 
         #region Interface
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

@@ -37,6 +37,8 @@ namespace SchoolHub.Common.Models
 
         public virtual ICollection<Usuario>? Usuarios { get; set; }
         public virtual ICollection<Turma>? Turmas { get; set; }
+        public virtual ICollection<Disciplina>? Disciplinas { get; set; } = new List<Disciplina>();
+
 
         #region Interface
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
