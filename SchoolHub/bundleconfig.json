@@ -11,9 +11,9 @@
   {
     "outputFileName": "wwwroot/assets/bundler/css/schoolhub.all.min.css",
     "inputFiles": [
-      "node_modules/toastr/build/toastr.min.css",
       "wwwroot/assets/css/tabler.css",
-      "wwwroot/assets/css/demo.css"
+      "wwwroot/assets/css/demo.css",
+      "node_modules/toastr/build/toastr.min.css"
     ]
   }
 ]

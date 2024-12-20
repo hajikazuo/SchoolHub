@@ -14,5 +14,8 @@ namespace SchoolHub.Common.Repositories.Interface
         Task<Turma> CreateAsync(Turma turma);
         Task<Turma> UpdateAsync(Turma turma);
         Task<Turma> DeleteAsync(Guid id);
+        Task<List<Disciplina>> GetDisciplinas(List<Guid> disciplinaIds);
+        Task<bool> AdicionarUsuariosATurma(Guid turmaId, List<Guid> usuariosParaAdd);
+        Task<bool> RemoverUsuariosDaTurma(Guid turmaId, List<Guid> usuariosParaRemover);
     }
 }

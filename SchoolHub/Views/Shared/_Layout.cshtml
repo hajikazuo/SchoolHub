@@ -26,8 +26,11 @@
             }
         </div>
     </div>
-    
+
+
+    @{
+        await Html.RenderPartialAsync("_Scripts");
+    }
     @await RenderSectionAsync("Scripts", required: false)
-    @await Html.PartialAsync("_Scripts")
 </body>
 </html>

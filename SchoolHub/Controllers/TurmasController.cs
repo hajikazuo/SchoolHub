@@ -73,15 +73,7 @@ namespace SchoolHub.Mvc.Controllers
             {
                 turma.TurmaId = _comb.Create();
                 turma.TennantId = tennantid;
-
-                foreach (var disciplinaId in disciplinaIds)
-                {
-                    var disciplina = await _context.Disciplinas.FirstOrDefaultAsync(c => c.DisciplinaId == disciplinaId);
-                    if (disciplina != null)
-                    {
-                        turma.Disciplinas.Add(disciplina);
-                    }
-                }
+                turma.Disciplinas = await _turmaRepository.GetDisciplinas(disciplinaIds);
 
                 await _turmaRepository.CreateAsync(turma);
 
@@ -121,14 +113,7 @@ namespace SchoolHub.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                foreach (var disciplinaId in disciplinaIds)
-                {
-                    var disciplina = await _context.Disciplinas.FindAsync(disciplinaId);
-                    if (disciplina != null)
-                    {
-                        turma.Disciplinas.Add(disciplina);
-                    }
-                }
+                turma.Disciplinas = await _turmaRepository.GetDisciplinas(disciplinaIds);
 
                 await _turmaRepository.UpdateAsync(turma);
 
@@ -150,21 +135,12 @@ namespace SchoolHub.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> AdicionarUsuarios(Guid turmaId, List<Guid> usuariosParaAdd)
         {
-            var turma = await _context.Turmas.FindAsync(turmaId);
-            if (turma == null)
+            var sucesso = await _turmaRepository.AdicionarUsuariosATurma(turmaId, usuariosParaAdd);
+
+            if (!sucesso)
             {
                 return NotFound();
             }
-
-            var usuarios = await _context.Usuarios.Where(u => usuariosParaAdd.Contains(u.Id)).ToListAsync();
-
-            foreach (var usuario in usuarios)
-            {
-                usuario.TurmaId = turma.TurmaId;     
-            }
-
-            _context.UpdateRange(usuarios); 
-            await _context.SaveChangesAsync();
 
             TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Usuários adicionados com sucesso!');})</script>";
             return RedirectToAction(nameof(Details), new { id = turmaId });
@@ -173,24 +149,15 @@ namespace SchoolHub.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoverUsuarios(Guid turmaId, List<Guid> usuariosParaRemover)
         {
-            var turma = await _context.Turmas.FindAsync(turmaId);
+            var sucesso = await _turmaRepository.RemoverUsuariosDaTurma(turmaId, usuariosParaRemover);
 
-            if (turma == null)
+            if (!sucesso)
             {
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios.Where(u => usuariosParaRemover.Contains(u.Id)).ToListAsync();
-
-            foreach (var usuario in usuarios)
-            {
-                usuario.TurmaId = null;   
-            }
-            _context.UpdateRange(usuarios);
-            await _context.SaveChangesAsync();
-
             TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Usuários removidos com sucesso!');})</script>";
-            return RedirectToAction(nameof(Details), new { id = turmaId }); 
+            return RedirectToAction(nameof(Details), new { id = turmaId });
         }
     }
 }
