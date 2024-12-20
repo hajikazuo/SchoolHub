@@ -41,9 +41,11 @@ namespace SchoolHub.Common.Models.Usuarios
         #region Interface
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.DateTime)]
+        [Display(Name = "Data de cadastro")]
         public DateTime DataCadastro { get; set; }
 
         [ScaffoldColumn(false)]
+        [Display(Name = "Data últ. modificação")]
         public DateTime? DataModificado { get; set; }
 
         #endregion

@@ -127,8 +127,17 @@ namespace SchoolHub.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _turmaRepository.DeleteAsync(id);
-            TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Excluído com sucesso!');})</script>";
+            var turma = await _turmaRepository.GetByIdAsync(id);
+            if(turma.Disciplinas.Count > 0)
+            {
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraErro('Erro', 'Essa turma possui disciplinas vinculadas e não pode ser excluída!');})</script>";
+            }
+            else
+            {
+                await _turmaRepository.DeleteAsync(id);
+                TempData["Confirm"] = "<script>$(document).ready(function () {MostraConfirm('Sucesso', 'Excluído com sucesso!');})</script>";
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
